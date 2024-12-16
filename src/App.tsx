@@ -39,15 +39,17 @@ export class App extends React.Component<Props, State> {
     this.timerId2 = window.setInterval(() => {
       const newClockName = this.getRandomName();
 
-      this.setState(prevState => {
-        // eslint-disable-next-line no-console
-        console.warn(`Renamed from ${prevState.clockName} to ${newClockName}`);
-
-        return { clockName: newClockName };
-      });
-
       this.setState({ clockName: newClockName });
     }, 3300);
+  }
+
+  componentDidUpdate(_prevProps: Readonly<State>, prevState: Readonly<State>) {
+    if (this.state.hasClock && prevState.clockName !== this.state.clockName) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `Renamed from ${prevState.clockName} to ${this.state.clockName}`,
+      );
+    }
   }
 
   componentWillUnmount(): void {
